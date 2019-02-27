@@ -1,0 +1,34 @@
+%This code creates a datastore of 960 flower images.%
+
+load pathToImages
+flwrds = imageDatastore(pathToImages,'IncludeSubfolders',true,'LabelSource','foldernames')
+
+
+%You can use the splitEachLabel function to divide the images in a datastore into two separate datastores.
+[ds1,ds2] = splitEachLabel(imds,p)
+The proportion p (a value from 0 to 1) indicates the proportion of images with each label from imds that should be contained in ds1. 
+The remaining files are assigned to ds2.%
+
+%Split the datastore flwrds into two datastores flwrTrain and flwrTest, such that 60% of the files in each category are in flwrTrain.%
+
+[flwrTrain,flwrTest] = splitEachLabel(flwrds,0.6)
+
+%By default, splitEachLabel keeps the files in order. You can randomly shuffle the files by adding the optional 'randomized' flag.
+[ds1,ds2] = splitEachLabel(imds,p,'randomized')%
+
+[flwrTrain,flwrTest] = splitEachLabel(flwrds,0.6,'randomized')
+
+
+%When p is a value from 0 to 1, it is interpreted as a proportion. The images are then split so that each label is split proportionally. 
+You can also specify an exact number of files to take from each label to assign to ds1.
+[ds1,ds2] = splitEachLabel(imds,n)
+This ensures that every label in ds1 has n images, even if the categories do not all contain the same number of images.%
+
+[flwrTrain,flwrTest] = splitEachLabel(flwrds,50)
+
+
+%Splitting the images into two sets makes it easy to use one set to train your network and the other to test the performance of the result.
+You can also use a “validation” set to monitor the performance of the network during training. 
+In this case, you can split your data into three sets: one for training, one for validation during training, and one for a 
+separate test of the final result. Try using splitEachLabel to divide the Flowers images into multiple sets. Give multiple values 
+of p or n as inputs, and ask for the appropriate number of datastores as outputs.%
